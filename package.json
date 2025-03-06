@@ -1,0 +1,24 @@
+{
+  "name": "batepontobot-discord",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ArielRSousa/BatePontoBot-Discord.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ArielRSousa/BatePontoBot-Discord/issues"
+  },
+  "homepage": "https://github.com/ArielRSousa/BatePontoBot-Discord#readme",
+  "dependencies": {
+    "discord.js": "^14.18.0",
+    "mongoose": "^8.12.1"
+  }
+}
