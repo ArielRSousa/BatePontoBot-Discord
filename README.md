@@ -132,5 +132,5 @@ Bot está online como [Nome do Bot]
 
 Este projeto é de código aberto e está licenciado sob a **MIT License**.  
 
-Feito com ❤️ por [Seu Nome](https://github.com/seu-usuario). 🚀
+Feito com ❤️ por [Ariel R](https://github.com/ArielRSousa). 🚀
 
