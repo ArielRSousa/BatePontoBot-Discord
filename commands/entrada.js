@@ -21,7 +21,7 @@ module.exports = {
             registro = new Registro({ userId, username, entrada: now });
             await registro.save();
 
-            interaction.reply(`✅ ${username}, sua entrada foi registrada às ${now.toLocaleTimeString()}`);
+            interaction.reply(`✅ ${username}, sua entrada foi registrada às ${now.toLocaleTimeString()} no dia ${now.toLocaleDateString("pt-br")}.`);
         } catch (error) {
             console.error(error);
             interaction.reply({ content: '❌ Erro ao registrar entrada.', ephemeral: true });
