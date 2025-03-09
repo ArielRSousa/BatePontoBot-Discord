@@ -24,7 +24,7 @@ module.exports = {
             registro.saida = now;
             await registro.save();
 
-            interaction.reply(`✅ Sua saída foi registrada às ${now.toLocaleTimeString()}`);
+            interaction.reply(`✅ Sua saída foi registrada às ${now.toLocaleTimeString()} no dia ${now.toLocaleDateString("pt-br")}.`);
         } catch (error) {
             console.error(error);
             interaction.reply({ content: '❌ Erro ao registrar saída.', ephemeral: true });
