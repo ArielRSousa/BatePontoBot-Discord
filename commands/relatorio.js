@@ -4,7 +4,7 @@ const Registro = require('../models/Registro');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('relatorio')
-        .setDescription('Mostra os registros de ponto'),
+        .setDescription('Mostra os registros de ponto com tempo total trabalhado'),
 
     async execute(interaction) {
         try {
@@ -29,9 +29,19 @@ module.exports = {
                     ? registro.saida.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }) 
                     : "N/A";
 
+                let tempoTotal = "N/A";
+
+                if (registro.entrada && registro.saida) {
+                    const diferencaMs = registro.saida - registro.entrada; // Diferença em milissegundos
+                    const horas = Math.floor(diferencaMs / (1000 * 60 * 60)); // Converter para horas
+                    const minutos = Math.floor((diferencaMs % (1000 * 60 * 60)) / (1000 * 60)); // Restante em minutos
+
+                    tempoTotal = `⏳ ${horas}h ${minutos}m`;
+                }
+
                 embed.addFields({
                     name: `👤 ${registro.username}`,
-                    value: `🕒 **Entrada:** ${entradaFormatada}\n🕒 **Saída:** ${saidaFormatada}`,
+                    value: `🕒 **Entrada:** ${entradaFormatada}\n🕒 **Saída:** ${saidaFormatada}\n${tempoTotal}`,
                     inline: false
                 });
             });
