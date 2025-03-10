@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const Registro = require('../models/Registro');
 
 module.exports = {
@@ -11,15 +11,34 @@ module.exports = {
             const registros = await Registro.find();
 
             if (registros.length === 0) {
-                return interaction.reply('📌 Nenhum registro de ponto encontrado.');
+                return interaction.reply({ content: '📌 Nenhum registro de ponto encontrado.', ephemeral: true });
             }
 
-            let response = '**📋 Relatório de Ponto:**\n';
+            
+            const embed = new EmbedBuilder()
+                .setTitle("📋 Relatório de Ponto")
+                .setColor("#0099ff")
+                .setFooter({ text: `Solicitado por ${interaction.user.username}`, iconURL: interaction.user.displayAvatarURL() })
+                .setTimestamp();
+
             registros.forEach(registro => {
-                response += `👤 ${registro.username} - 🕒 Entrada: ${registro.entrada ? registro.entrada.toLocaleTimeString() : 'N/A'} | 🕒 Saída: ${registro.saida ? registro.saida.toLocaleTimeString() : 'N/A'}\n`;
+                const entradaFormatada = registro.entrada 
+                    ? registro.entrada.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }) 
+                    : "N/A";
+                const saidaFormatada = registro.saida 
+                    ? registro.saida.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }) 
+                    : "N/A";
+
+                embed.addFields({
+                    name: `👤 ${registro.username}`,
+                    value: `🕒 **Entrada:** ${entradaFormatada}\n🕒 **Saída:** ${saidaFormatada}`,
+                    inline: false
+                });
             });
 
-            interaction.reply(response);
+            
+            interaction.reply({ embeds: [embed] });
+
         } catch (error) {
             console.error(error);
             interaction.reply({ content: '❌ Erro ao buscar registros.', ephemeral: true });
