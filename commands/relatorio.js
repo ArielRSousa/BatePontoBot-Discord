@@ -14,7 +14,6 @@ module.exports = {
                 return interaction.reply({ content: '📌 Nenhum registro de ponto encontrado.', ephemeral: true });
             }
 
-            
             const embed = new EmbedBuilder()
                 .setTitle("📋 Relatório de Ponto")
                 .setColor("#0099ff")
@@ -22,31 +21,31 @@ module.exports = {
                 .setTimestamp();
 
             registros.forEach(registro => {
-                const entradaFormatada = registro.entrada 
-                    ? registro.entrada.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }) 
-                    : "N/A";
-                const saidaFormatada = registro.saida 
-                    ? registro.saida.toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" }) 
-                    : "N/A";
+                let pontosTexto = "";
 
-                let tempoTotal = "N/A";
+                registro.pontos.forEach(ponto => {
+                    const entradaFormatada = ponto.entrada ? ponto.entrada.toLocaleString("pt-BR") : "N/A";
+                    const saidaFormatada = ponto.saida ? ponto.saida.toLocaleString("pt-BR") : "N/A";
 
-                if (registro.entrada && registro.saida) {
-                    const diferencaMs = registro.saida - registro.entrada; // Diferença em milissegundos
-                    const horas = Math.floor(diferencaMs / (1000 * 60 * 60)); // Converter para horas
-                    const minutos = Math.floor((diferencaMs % (1000 * 60 * 60)) / (1000 * 60)); // Restante em minutos
+                    let tempoTotal = "N/A";
+                    if (ponto.entrada && ponto.saida) {
+                        const diferencaMs = ponto.saida - ponto.entrada;
+                        const horas = Math.floor(diferencaMs / (1000 * 60 * 60));
+                        const minutos = Math.floor((diferencaMs % (1000 * 60 * 60)) / (1000 * 60));
 
-                    tempoTotal = `⏳ ${horas}h ${minutos}m`;
-                }
+                        tempoTotal = `⏳ ${horas}h ${minutos}m`;
+                    }
+
+                    pontosTexto += `🕒 **Entrada:** ${entradaFormatada}\n🕒 **Saída:** ${saidaFormatada}\n${tempoTotal}\n\n`;
+                });
 
                 embed.addFields({
                     name: `👤 ${registro.username}`,
-                    value: `🕒 **Entrada:** ${entradaFormatada}\n🕒 **Saída:** ${saidaFormatada}\n${tempoTotal}`,
+                    value: pontosTexto,
                     inline: false
                 });
             });
 
-            
             interaction.reply({ embeds: [embed] });
 
         } catch (error) {

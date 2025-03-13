@@ -13,29 +13,29 @@ module.exports = {
         try {
             let registro = await Registro.findOne({ userId });
 
-            if (!registro) {
+            if (!registro || registro.pontos.length === 0) {
                 const embedErro = new EmbedBuilder()
                     .setColor("#ff0000")
                     .setTitle("❌ Nenhuma entrada registrada!")
                     .setDescription("Você ainda **não registrou sua entrada**. Use `/entrada` primeiro.")
-                    .setFooter({ text: "Registre sua entrada antes de marcar saída." })
                     .setTimestamp();
 
                 return interaction.reply({ embeds: [embedErro], ephemeral: true });
             }
 
-            if (registro.saida) {
+            let ultimoPonto = registro.pontos.find(p => !p.saida);
+
+            if (!ultimoPonto) {
                 const embedErro = new EmbedBuilder()
                     .setColor("#ff0000")
-                    .setTitle("❌ Saída já registrada!")
-                    .setDescription(`Você já registrou sua saída às **${registro.saida.toLocaleTimeString("pt-BR")}** no dia **${registro.saida.toLocaleDateString("pt-BR")}**.`)
-                    .setFooter({ text: "Se precisar corrigir, fale com um administrador." })
+                    .setTitle("❌ Todas as entradas já possuem saída!")
+                    .setDescription("Você já registrou todas as suas saídas. Use `/entrada` antes de registrar uma nova saída.")
                     .setTimestamp();
 
                 return interaction.reply({ embeds: [embedErro], ephemeral: true });
             }
 
-            registro.saida = now;
+            ultimoPonto.saida = now;
             await registro.save();
 
             const embedSucesso = new EmbedBuilder()
@@ -53,14 +53,7 @@ module.exports = {
 
         } catch (error) {
             console.error(error);
-
-            const embedErro = new EmbedBuilder()
-                .setColor("#ff0000")
-                .setTitle("❌ Erro ao registrar saída!")
-                .setDescription("Ocorreu um erro ao tentar registrar sua saída. Tente novamente mais tarde.")
-                .setTimestamp();
-
-            interaction.reply({ embeds: [embedErro], ephemeral: true });
+            interaction.reply({ content: '❌ Erro ao registrar saída.', ephemeral: true });
         }
     }
 };
