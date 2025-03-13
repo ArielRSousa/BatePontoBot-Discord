@@ -14,24 +14,17 @@ module.exports = {
         try {
             let registro = await Registro.findOne({ userId });
 
-            if (registro) {
-                const embedErro = new EmbedBuilder()
-                    .setColor("#ff0000")
-                    .setTitle("❌ Entrada já registrada!")
-                    .setDescription(`Você já registrou sua entrada às **${registro.entrada.toLocaleTimeString("pt-BR")}** no dia **${registro.entrada.toLocaleDateString("pt-BR")}**.`)
-                    .setFooter({ text: "Se precisar corrigir, fale com um administrador." })
-                    .setTimestamp();
-
-                return interaction.reply({ embeds: [embedErro], ephemeral: true });
+            if (!registro) {
+                registro = new Registro({ userId, username, pontos: [] });
             }
 
-            registro = new Registro({ userId, username, entrada: now });
+            registro.pontos.push({ entrada: now, saida: null });
             await registro.save();
 
-            const embedSucesso = new EmbedBuilder()
+            const embed = new EmbedBuilder()
                 .setColor("#00ff00")
                 .setTitle("✅ Entrada Registrada!")
-                .setDescription(`Olá, **${username}**! Seu horário de entrada foi registrado com sucesso.`)
+                .setDescription(`Olá, **${username}**! Seu horário de entrada foi registrado.`)
                 .addFields(
                     { name: "🕒 Horário", value: `${now.toLocaleTimeString("pt-BR")}`, inline: true },
                     { name: "📅 Data", value: `${now.toLocaleDateString("pt-BR")}`, inline: true }
@@ -39,17 +32,11 @@ module.exports = {
                 .setFooter({ text: "Bom trabalho! 👍" })
                 .setTimestamp();
 
-            interaction.reply({ embeds: [embedSucesso] });
+            interaction.reply({ embeds: [embed] });
+
         } catch (error) {
             console.error(error);
-
-            const embedErro = new EmbedBuilder()
-                .setColor("#ff0000")
-                .setTitle("❌ Erro ao registrar entrada!")
-                .setDescription("Ocorreu um erro ao tentar registrar sua entrada. Tente novamente mais tarde.")
-                .setTimestamp();
-
-            interaction.reply({ embeds: [embedErro], ephemeral: true });
+            interaction.reply({ content: '❌ Erro ao registrar entrada.', ephemeral: true });
         }
     }
 };
