@@ -1,6 +1,6 @@
 # 🕒 Bot Bate-Ponto - Discord
 
-Um bot para Discord que permite registrar **horários de entrada e saída** dos usuários, armazenando os dados no **MongoDB**.
+Um bot para Discord que permite registrar **múltiplos horários de entrada e saída** dos usuários, armazenando os dados no **MongoDB**.
 
 ## 🚀 Tecnologias Utilizadas
 
@@ -14,14 +14,15 @@ Um bot para Discord que permite registrar **horários de entrada e saída** dos 
 
 ## 📌 Funcionalidades
 
-👉 Registro de **entrada e saída** com `/entrada` e `/saida`  
-👉 Comando `/relatorio` para exibir todos os registros  
-👉 Armazenamento no **MongoDB**  
-👉 Suporte a **Slash Commands**  
+👉 **Registro de entrada e saída ilimitados** 📆  
+👉 **Comando `/relatorio`** exibe **todos os registros de cada usuário** 📊  
+👉 **Comando `/apagar`** para remover registros antigos 🔥  
+👉 **Armazenamento no MongoDB** 💾  
+👉 **Suporte a Slash Commands** ⚡  
 
 ---
 
-## 📦 Instalação
+## 📚 Instalação
 
 ### 1️⃣ **Clone o repositório**
 ```bash
@@ -95,6 +96,7 @@ Bot está online como [Nome do Bot]
 | `/entrada`   | Registra o horário de entrada |
 | `/saida`     | Registra o horário de saída |
 | `/relatorio` | Mostra todos os registros de ponto |
+| `/apagar`    | Remove registros antigos do banco |
 
 ---
 
@@ -102,19 +104,20 @@ Bot está online como [Nome do Bot]
 
 ```
 📂 BatePontoBot-Discord/
- ├── 📂 commands/          # Comandos Slash
- │    ├── entrada.js
- │    ├── saida.js
- │    ├── relatorio.js
- ├── 📂 models/            # Modelos do MongoDB
- │    ├── Registro.js
- ├── 📄 index.js           # Código principal do bot
- ├── 📄 deploy-commands.js # Script para registrar os comandos no Discord
- ├── 📄 database.js        # Conexão com o MongoDB
- ├── 📄 .env               # Configurações do ambiente
- ├── 📄 .gitignore         # Ignorar arquivos desnecessários no Git
- ├── 📄 package.json       # Dependências do projeto
- ├── 📄 README.md          # Documentação do projeto
+ ├─📂 commands/          # Comandos Slash
+ │    ├─ entrada.js
+ │    ├─ saida.js
+ │    ├─ relatorio.js
+ │    ├─ apagar.js
+ ├─📂 models/            # Modelos do MongoDB
+ │    ├─ Registro.js
+ ├─📄 index.js           # Código principal do bot
+ ├─📄 deploy-commands.js # Script para registrar os comandos no Discord
+ ├─📄 database.js        # Conexão com o MongoDB
+ ├─📄 .env               # Configurações do ambiente
+ ├─📄 .gitignore         # Ignorar arquivos desnecessários no Git
+ ├─📄 package.json       # Dependências do projeto
+ ├─📄 README.md          # Documentação do projeto
 ```
 
 ---
@@ -122,9 +125,9 @@ Bot está online como [Nome do Bot]
 ## 🎯 Próximos Passos
 
 - [ ] Melhorar os logs do bot 💜  
-- [ ] Criar um comando `/apagar` para remover registros antigos 🗑️  
-- [ ] Criar **relatórios em Excel/PDF** 📊  
+- [ ] Criar relatórios em Excel/PDF 📊  
 - [ ] Criar um sistema de **horários pré-definidos** ⏰  
+- [ ] Adicionar integração com **Google Sheets** 📄  
 
 ---
 
@@ -132,5 +135,4 @@ Bot está online como [Nome do Bot]
 
 Este projeto é de código aberto e está licenciado sob a **MIT License**.  
 
-Feito com ❤️ por [Ariel R](https://github.com/ArielRSousa). 🚀
-
+Feito com ❤️ por [Ariel R](https://github.com/ArielRSousa)
