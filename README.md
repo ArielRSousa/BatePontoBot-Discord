@@ -124,7 +124,6 @@ Bot está online como [Nome do Bot]
 
 ## 🎯 Próximos Passos
 
-- [ ] Melhorar os logs do bot 💜  
 - [ ] Criar relatórios em Excel/PDF 📊  
 - [ ] Criar um sistema de **horários pré-definidos** ⏰  
 - [ ] Adicionar integração com **Google Sheets** 📄  
