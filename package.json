@@ -18,10 +18,17 @@
   },
   "homepage": "https://github.com/ArielRSousa/BatePontoBot-Discord#readme",
   "dependencies": {
+    "boxen": "^8.0.1",
+    "chalk": "^5.4.1",
+    "chalk-animation": "^2.0.3",
     "discord.js": "^14.18.0",
     "dotenv": "^16.4.7",
     "exceljs": "^4.4.0",
+    "figlet": "^1.8.0",
+    "gradient-string": "^3.0.0",
     "mongoose": "^8.12.1",
+    "ora": "^5.4.1",
+    "path": "^0.12.7",
     "winston": "^3.17.0"
   }
 }
