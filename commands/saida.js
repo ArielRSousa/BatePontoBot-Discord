@@ -1,5 +1,10 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 const Registro = require('../models/Registro');
+const moment = require('moment');
+
+const horarios = {
+    saida: { inicio: '17:00', fim: '18:00' }
+};
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,6 +14,22 @@ module.exports = {
     async execute(interaction) {
         const userId = interaction.user.id;
         const now = new Date();
+        const horarioAtual = moment();
+        const inicio = moment(horarios.saida.inicio, 'HH:mm');
+        const fim = moment(horarios.saida.fim, 'HH:mm');
+
+        let status = '';
+        let cor = '#00ff00';
+
+        if (horarioAtual.isBefore(inicio)) {
+            status = '⚠️ Você está saindo **mais cedo**.';
+            cor = '#ffcc00';
+        } else if (horarioAtual.isAfter(fim)) {
+            status = '💪 Você ficou além do expediente!';
+            cor = '#9966ff';
+        } else {
+            status = '✅ Você saiu no horário.';
+        }
 
         try {
             let registro = await Registro.findOne({ userId });
@@ -29,7 +50,7 @@ module.exports = {
                 const embedErro = new EmbedBuilder()
                     .setColor("#ff0000")
                     .setTitle("❌ Todas as entradas já possuem saída!")
-                    .setDescription("Você já registrou todas as suas saídas. Use `/entrada` antes de registrar uma nova saída.")
+                    .setDescription("Use `/entrada` antes de registrar uma nova saída.")
                     .setTimestamp();
 
                 return interaction.reply({ embeds: [embedErro], ephemeral: true });
@@ -39,12 +60,13 @@ module.exports = {
             await registro.save();
 
             const embedSucesso = new EmbedBuilder()
-                .setColor("#00ff00")
+                .setColor(cor)
                 .setTitle("✅ Saída Registrada!")
                 .setDescription("Seu horário de saída foi registrado com sucesso.")
                 .addFields(
-                    { name: "🕒 Horário", value: `${now.toLocaleTimeString("pt-BR")}`, inline: true },
-                    { name: "📅 Data", value: `${now.toLocaleDateString("pt-BR")}`, inline: true }
+                    { name: "🕒 Horário", value: now.toLocaleTimeString("pt-BR"), inline: true },
+                    { name: "📅 Data", value: now.toLocaleDateString("pt-BR"), inline: true },
+                    { name: "📌 Status", value: status }
                 )
                 .setFooter({ text: "Bom descanso! 😃" })
                 .setTimestamp();
